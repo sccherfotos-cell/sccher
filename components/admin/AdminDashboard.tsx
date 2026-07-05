@@ -7,10 +7,12 @@ import CategoryManager from "./CategoryManager";
 import PhotoManager from "./PhotoManager";
 import PhotoUploadForm from "./PhotoUploadForm";
 import LogoManager from "./LogoManager";
+import PlanManager from "./PlanManager";
 
 const TABS = [
   { id: "categorias", label: "Categorias" },
   { id: "fotos", label: "Fotos" },
+  { id: "planos", label: "Planos" },
   { id: "logo", label: "Logo" },
 ] as const;
 
@@ -68,6 +70,12 @@ export default function AdminDashboard({ initialData }: { initialData: Portfolio
         <section>
           <PhotoUploadForm categories={data.categories} onUpdate={setData} />
           <PhotoManager data={data} onUpdate={setData} />
+        </section>
+      )}
+
+      {tab === "planos" && (
+        <section>
+          <PlanManager data={data} onUpdate={setData} />
         </section>
       )}
 

@@ -14,7 +14,7 @@ async function loadData(): Promise<PortfolioData> {
   try {
     return await getPortfolioData();
   } catch {
-    return { version: 1, categories: [], logo: null };
+    return { version: 1, categories: [], logo: null, plans: [] };
   }
 }
 

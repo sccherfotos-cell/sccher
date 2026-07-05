@@ -1,5 +1,5 @@
 import { put, list, del } from "@vercel/blob";
-import type { PortfolioData } from "./types";
+import type { Plan, PortfolioData } from "./types";
 
 // Vercel Blob's public URLs are CDN-cached (minimum 1 minute, can't be
 // disabled) — reading the same fixed pathname right after writing it can
@@ -35,6 +35,47 @@ function requireToken(): string {
   return token;
 }
 
+function seedPlans(): Plan[] {
+  const plans: Array<Omit<Plan, "id" | "order">> = [
+    {
+      name: "Individual",
+      price: "R$250",
+      priceNote: null,
+      details: [
+        { label: "Duração", value: "1 hora de sessão" },
+        { label: "Entregas", value: "10 fotos digitais editadas em alta resolução" },
+        { label: "Locação", value: "Externa ou em estúdio (combinada com o cliente)" },
+        { label: "Prazo de entrega", value: "Até 7 dias úteis" },
+      ],
+    },
+    {
+      name: "Equipe 1",
+      price: "R$250",
+      priceNote: "+ R$60 / pessoa",
+      details: [
+        { label: "Grupo", value: "No máximo 5 pessoas" },
+        { label: "Duração", value: "2 a 3 horas de sessão" },
+        { label: "Entregas", value: "10 fotos digitais editadas em alta resolução por pessoa" },
+        { label: "Locação", value: "Externa ou em estúdio (combinada com o cliente)" },
+        { label: "Prazo de entrega", value: "Até 10 dias úteis" },
+      ],
+    },
+    {
+      name: "Equipe 2",
+      price: "R$300",
+      priceNote: "+ R$80 / pessoa",
+      details: [
+        { label: "Grupo", value: "6 ou mais pessoas" },
+        { label: "Duração", value: "4 horas de sessão" },
+        { label: "Entregas", value: "10 fotos digitais editadas em alta resolução por pessoa" },
+        { label: "Locação", value: "Externa ou em estúdio (combinada com o cliente)" },
+        { label: "Prazo de entrega", value: "Até 15 dias úteis" },
+      ],
+    },
+  ];
+  return plans.map((p, i) => ({ ...p, id: crypto.randomUUID(), order: i }));
+}
+
 function seedData(): PortfolioData {
   const names = ["Ensaios Pessoais", "Ensaios Corporativos", "Ensaios Infantis", "Eventos"];
   return {
@@ -48,6 +89,7 @@ function seedData(): PortfolioData {
       order: i,
     })),
     logo: null,
+    plans: seedPlans(),
   };
 }
 
@@ -67,7 +109,12 @@ export async function getPortfolioData(): Promise<PortfolioData> {
 
   const res = await fetch(latest.url, { cache: "no-store" });
   if (!res.ok) throw new Error("Falha ao buscar dados do portfólio no Blob.");
-  return (await res.json()) as PortfolioData;
+  const data = (await res.json()) as PortfolioData;
+
+  // Backward-compat: data saved before `plans` existed won't have the field.
+  if (!data.plans) data.plans = seedPlans();
+
+  return data;
 }
 
 export async function savePortfolioData(data: PortfolioData): Promise<void> {

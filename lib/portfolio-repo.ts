@@ -1,7 +1,7 @@
 import sharp from "sharp";
 import { getPortfolioData, savePortfolioData, slugify, uploadFile, deleteFile } from "./blob-store";
 import { removeBackground } from "./chroma-key";
-import type { Category, Photo, PortfolioData } from "./types";
+import type { Category, Photo, Plan, PlanDetail, PortfolioData } from "./types";
 
 export class CategoryNotEmptyError extends Error {
   constructor() {
@@ -30,6 +30,12 @@ function findCategory(data: PortfolioData, id: string): Category {
   const category = data.categories.find((c) => c.id === id);
   if (!category) throw new NotFoundError("Categoria");
   return category;
+}
+
+function findPlan(data: PortfolioData, id: string): Plan {
+  const plan = data.plans.find((p) => p.id === id);
+  if (!plan) throw new NotFoundError("Plano");
+  return plan;
 }
 
 export async function addCategory(name: string): Promise<PortfolioData> {
@@ -180,5 +186,50 @@ export async function replaceLogo(
     await deleteFile(previousLogoUrl).catch(() => {});
   }
 
+  return data;
+}
+
+export interface PlanInput {
+  name: string;
+  price: string;
+  priceNote: string | null;
+  details: PlanDetail[];
+}
+
+export async function addPlan(input: PlanInput): Promise<PortfolioData> {
+  const data = await getPortfolioData();
+  const order = data.plans.length ? Math.max(...data.plans.map((p) => p.order)) + 1 : 0;
+  const plan: Plan = { id: crypto.randomUUID(), order, ...input };
+  data.plans.push(plan);
+  await savePortfolioData(data);
+  return data;
+}
+
+export async function updatePlan(id: string, input: PlanInput): Promise<PortfolioData> {
+  const data = await getPortfolioData();
+  const plan = findPlan(data, id);
+  plan.name = input.name;
+  plan.price = input.price;
+  plan.priceNote = input.priceNote;
+  plan.details = input.details;
+  await savePortfolioData(data);
+  return data;
+}
+
+export async function deletePlan(id: string): Promise<PortfolioData> {
+  const data = await getPortfolioData();
+  findPlan(data, id);
+  data.plans = data.plans.filter((p) => p.id !== id);
+  await savePortfolioData(data);
+  return data;
+}
+
+export async function reorderPlans(orderedIds: string[]): Promise<PortfolioData> {
+  const data = await getPortfolioData();
+  orderedIds.forEach((id, index) => {
+    const plan = data.plans.find((p) => p.id === id);
+    if (plan) plan.order = index;
+  });
+  await savePortfolioData(data);
   return data;
 }

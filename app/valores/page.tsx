@@ -1,49 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getPortfolioData } from "@/lib/blob-store";
+import type { Plan } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Valores — SCCHER",
 };
 
-const PACKAGES = [
-  {
-    name: "Individual",
-    price: "R$250",
-    priceNote: null,
-    details: [
-      ["Duração", "1 hora de sessão"],
-      ["Entregas", "10 fotos digitais editadas em alta resolução"],
-      ["Locação", "Externa ou em estúdio (combinada com o cliente)"],
-      ["Prazo de entrega", "Até 7 dias úteis"],
-    ],
-  },
-  {
-    name: "Equipe 1",
-    price: "R$250",
-    priceNote: "+ R$60 / pessoa",
-    details: [
-      ["Grupo", "No máximo 5 pessoas"],
-      ["Duração", "2 a 3 horas de sessão"],
-      ["Entregas", "10 fotos digitais editadas em alta resolução por pessoa"],
-      ["Locação", "Externa ou em estúdio (combinada com o cliente)"],
-      ["Prazo de entrega", "Até 10 dias úteis"],
-    ],
-  },
-  {
-    name: "Equipe 2",
-    price: "R$300",
-    priceNote: "+ R$80 / pessoa",
-    details: [
-      ["Grupo", "6 ou mais pessoas"],
-      ["Duração", "4 horas de sessão"],
-      ["Entregas", "10 fotos digitais editadas em alta resolução por pessoa"],
-      ["Locação", "Externa ou em estúdio (combinada com o cliente)"],
-      ["Prazo de entrega", "Até 15 dias úteis"],
-    ],
-  },
-];
+async function loadPlans(): Promise<Plan[]> {
+  try {
+    const data = await getPortfolioData();
+    return [...data.plans].sort((a, b) => a.order - b.order);
+  } catch {
+    return [];
+  }
+}
 
-export default function Valores() {
+const GRID_COLS_CLASS: Record<number, string> = {
+  1: "sm:grid-cols-1",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-3",
+};
+
+export default async function Valores() {
+  const plans = await loadPlans();
+  const gridColsClass = GRID_COLS_CLASS[Math.min(plans.length, 3)] ?? "sm:grid-cols-3";
+
   return (
     <div className="min-h-screen bg-background px-6 pb-24 pt-32 md:px-10 md:pt-40">
       <header className="mb-14 max-w-2xl">
@@ -56,39 +38,41 @@ export default function Valores() {
       </header>
 
       {/* Pricing tiers */}
-      <div className="grid gap-px overflow-hidden border border-panel-2 bg-panel-2 sm:grid-cols-3">
-        {PACKAGES.map((pkg) => (
-          <div key={pkg.name} className="flex flex-col bg-background p-6 md:p-8">
-            <h2 className="text-xs uppercase tracking-[0.35em] text-muted">
-              {pkg.name}
-            </h2>
+      {plans.length > 0 && (
+        <>
+          <div className={`grid gap-px overflow-hidden border border-panel-2 bg-panel-2 ${gridColsClass}`}>
+            {plans.map((plan) => (
+              <div key={plan.id} className="flex flex-col bg-background p-6 md:p-8">
+                <h2 className="text-xs uppercase tracking-[0.35em] text-muted">
+                  {plan.name}
+                </h2>
 
-            <dl className="mt-6 flex flex-1 flex-col gap-4 text-sm">
-              {pkg.details.map(([label, value]) => (
-                <div key={label}>
-                  <dt className="text-[10px] uppercase tracking-[0.25em] text-muted">
-                    {label}
-                  </dt>
-                  <dd className="mt-1 leading-relaxed">{value}</dd>
+                <dl className="mt-6 flex flex-1 flex-col gap-4 text-sm">
+                  {plan.details.map((detail) => (
+                    <div key={detail.label}>
+                      <dt className="text-[10px] uppercase tracking-[0.25em] text-muted">
+                        {detail.label}
+                      </dt>
+                      <dd className="mt-1 leading-relaxed">{detail.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <div className="mt-8 border-t border-panel-2 pt-6">
+                  <span className="text-2xl font-medium tracking-tight">{plan.price}</span>
+                  {plan.priceNote && (
+                    <span className="ml-2 text-xs text-muted">{plan.priceNote}</span>
+                  )}
                 </div>
-              ))}
-            </dl>
-
-            <div className="mt-8 border-t border-panel-2 pt-6">
-              <span className="text-2xl font-medium tracking-tight">{pkg.price}</span>
-              {pkg.priceNote && (
-                <span className="ml-2 text-xs text-muted">
-                  {pkg.priceNote}
-                </span>
-              )}
-            </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-muted">
-        * Orçamento válido por 30 dias após o envio.
-      </p>
+          <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-muted">
+            * Orçamento válido por 30 dias após o envio.
+          </p>
+        </>
+      )}
 
       {/* Como funciona */}
       <section className="mt-24 grid gap-12 md:grid-cols-2">
