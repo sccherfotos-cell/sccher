@@ -157,19 +157,28 @@ export async function replaceLogo(
   removeBg: boolean
 ): Promise<PortfolioData> {
   const data = await getPortfolioData();
+  const previousLogoUrl = data.logo?.url ?? null;
 
   const processed = removeBg
     ? await removeBackground(fileBuffer)
     : await sharp(fileBuffer).png().toBuffer();
 
-  const uploaded = await uploadFile("logo/logo.png", processed, "image/png");
+  // Unique pathname per upload (not a fixed, overwritten one): Vercel Blob's
+  // public URLs are CDN-cached, so reusing the same URL could keep serving
+  // the old logo for a while after replacing it.
+  const uploaded = await uploadFile(`logo/logo-${crypto.randomUUID()}.png`, processed, "image/png");
 
   data.logo = {
-    url: `${uploaded.url}?v=${Date.now()}`,
+    url: uploaded.url,
     blobPathname: uploaded.pathname,
     updatedAt: new Date().toISOString(),
   };
 
   await savePortfolioData(data);
+
+  if (previousLogoUrl) {
+    await deleteFile(previousLogoUrl).catch(() => {});
+  }
+
   return data;
 }

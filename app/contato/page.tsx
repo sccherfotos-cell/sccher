@@ -52,7 +52,6 @@ export default function Contato() {
               Redes sociais
             </span>
             <div className="mt-1 flex flex-col gap-1 text-lg text-muted">
-              <span>@cinthiasccher</span>
               <span>@scalese.fotografia</span>
             </div>
           </div>
