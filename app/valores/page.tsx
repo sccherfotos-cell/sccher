@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getPortfolioData } from "@/lib/blob-store";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import PlansCarousel from "@/components/PlansCarousel";
 import type { Plan } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -40,7 +41,9 @@ export default async function Valores() {
       {/* Pricing tiers */}
       {plans.length > 0 && (
         <>
-          <div className={`grid gap-px overflow-hidden border border-panel-2 bg-panel-2 ${gridColsClass}`}>
+          <PlansCarousel plans={plans} />
+
+          <div className={`hidden gap-px overflow-hidden border border-panel-2 bg-panel-2 sm:grid ${gridColsClass}`}>
             {plans.map((plan) => (
               <div key={plan.id} className="flex flex-col bg-background p-6 md:p-8">
                 <h2 className="text-xs uppercase tracking-[0.35em] text-muted">
