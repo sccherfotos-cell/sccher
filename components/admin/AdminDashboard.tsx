@@ -8,12 +8,14 @@ import PhotoManager from "./PhotoManager";
 import PhotoUploadForm from "./PhotoUploadForm";
 import LogoManager from "./LogoManager";
 import PlanManager from "./PlanManager";
+import PasswordManager from "./PasswordManager";
 
 const TABS = [
   { id: "categorias", label: "Categorias" },
   { id: "fotos", label: "Fotos" },
   { id: "planos", label: "Planos" },
   { id: "logo", label: "Logo" },
+  { id: "senha", label: "Senha" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -82,6 +84,12 @@ export default function AdminDashboard({ initialData }: { initialData: Portfolio
       {tab === "logo" && (
         <section>
           <LogoManager logo={data.logo} onUpdate={setData} />
+        </section>
+      )}
+
+      {tab === "senha" && (
+        <section>
+          <PasswordManager />
         </section>
       )}
     </div>

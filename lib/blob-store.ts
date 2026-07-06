@@ -131,6 +131,39 @@ export async function savePortfolioData(data: PortfolioData): Promise<void> {
   if (stale.length > 0) await del(stale, { token });
 }
 
+// Kept under its own prefix, never included in PortfolioData/getPortfolioData
+// — that JSON is served as-is by the public /api/portfolio route, so the
+// password hash must never end up in it.
+const AUTH_PREFIX = "auth/admin-password";
+
+export async function getStoredPasswordHash(): Promise<string | null> {
+  const token = requireToken();
+  const { blobs } = await list({ prefix: AUTH_PREFIX, token });
+  if (blobs.length === 0) return null;
+
+  const latest = [...blobs].sort(
+    (a, b) => b.uploadedAt.getTime() - a.uploadedAt.getTime()
+  )[0];
+
+  const res = await fetch(latest.url, { cache: "no-store" });
+  if (!res.ok) return null;
+  return (await res.text()).trim();
+}
+
+export async function saveStoredPasswordHash(hash: string): Promise<void> {
+  const token = requireToken();
+  const result = await put(`${AUTH_PREFIX}.txt`, hash, {
+    access: "public",
+    addRandomSuffix: true,
+    contentType: "text/plain",
+    token,
+  });
+
+  const { blobs } = await list({ prefix: AUTH_PREFIX, token });
+  const stale = blobs.filter((b) => b.pathname !== result.pathname).map((b) => b.url);
+  if (stale.length > 0) await del(stale, { token });
+}
+
 export async function uploadFile(
   pathname: string,
   body: Buffer,
