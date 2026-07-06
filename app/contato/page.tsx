@@ -56,12 +56,12 @@ export default function Contato() {
             </span>
             <div className="mt-1 flex flex-col gap-1 text-lg text-muted">
               <a
-                href="https://www.instagram.com/scalese.fotografia"
+                href="https://www.instagram.com/sccher.fotografia"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-colors hover:text-foreground"
               >
-                @scalese.fotografia
+                @sccher.fotografia
               </a>
             </div>
           </div>
