@@ -49,7 +49,7 @@ export default function AdminDashboard({ initialData }: { initialData: Portfolio
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
           aria-expanded={menuOpen}
-          className="flex h-8 w-8 flex-col items-center justify-center gap-[5px] lg:hidden"
+          className="mt-3 flex h-8 w-8 flex-col items-center justify-center gap-[5px] lg:hidden"
         >
           <span
             className={`h-px w-5 bg-foreground transition-transform duration-200 ${
