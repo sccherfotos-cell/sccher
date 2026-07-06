@@ -25,13 +25,15 @@ gerar desejo de agendar um ensaio, não em ser puramente conceitual.
 
 - **Home (`/`)** — hero com frase de efeito, lente de câmera com diafragma
   animado ao fundo (SVG, não Three.js), botões para Portfólio e Valores.
-- **Portfólio (`/portfolio`)** — grade de categorias (cada uma com uma foto de
-  capa escolhida no painel); `/portfolio/[categoria]` abre a galeria completa
-  daquela categoria.
-- **Valores (`/valores`)** — planos e preços. No desktop, grade lado a lado;
-  no mobile, carrossel de 1 plano por vez com setas finas sobre o card e
-  troca automática a cada 5s. Também tem "Como funciona", "Fotos extras" e
-  "Formas de pagamento".
+- **Portfólio (`/portfolio`)** — grade de categorias com cards de tamanho
+  uniforme (proporção 4:5, cada uma com uma foto de capa escolhida no
+  painel); `/portfolio/[categoria]` abre a galeria completa daquela
+  categoria.
+- **Valores (`/valores`)** — planos e preços. Até 3 planos: grade lado a
+  lado no desktop e carrossel de 1 plano por vez no mobile (setas finas
+  sobre o card, troca automática a cada 5s). Com mais de 3 planos, o
+  carrossel passa a valer também no desktop (setas fora do card). Também
+  tem "Como funciona", "Fotos extras" e "Formas de pagamento".
 - **Contato (`/contato`)** — telefone (abre WhatsApp), email, Instagram
   (`@sccher.fotografia`, link direto pro perfil).
 - **Admin (`/admin`)** — painel protegido por senha (ver seção 5).
@@ -55,18 +57,31 @@ botão flutuante de WhatsApp, toggle de tema claro/escuro, cadeado discreto
 
 ## 5. Painel Administrativo
 
-Acesso: ícone de cadeado discreto no rodapé → `/admin/login` (senha única,
-não é multi-usuário) → sessão via cookie assinado (7 dias).
+Acesso: ícone de cadeado discreto no rodapé (link sem prefetch, só carrega o
+painel se realmente clicado) → `/admin/login` (senha única, não é
+multi-usuário) → sessão via cookie assinado (7 dias). Ao entrar, o painel
+abre direto na aba Fotos.
+
+No topo de todas as páginas, a navegação global mostra "Site" (em vez do
+hambúrguer normal) quando a rota é `/admin/*`, abrindo os links do site
+público. As abas do painel (abaixo) têm seu próprio hambúrguer no
+mobile/tablet; no desktop ficam em barra horizontal. O botão "Sair" fica no
+rodapé da página do painel (não no topo).
 
 Abas do painel (`/admin`):
 - **Categorias** — criar, editar (nome), excluir (bloqueado se tiver fotos),
   reordenar.
 - **Fotos** — upload por categoria, excluir, reordenar, marcar como
-  foto-capa da categoria.
+  foto-capa da categoria, e "Enquadrar" (definir o ponto focal da foto por
+  clique, usado como `object-position` sempre que ela aparecer num card de
+  proporção fixa — evita cortes ruins quando a foto não bate com a
+  proporção do card).
 - **Planos** — nome, preço, observação opcional, lista livre de itens
   (rótulo + valor), criar/editar/excluir/reordenar.
 - **Logo** — trocar o logo do site, com opção de remover o fundo
   automaticamente (chroma-key por cor do canto da imagem).
+- **Senha** — trocar a senha de acesso ao painel direto pela interface (ver
+  seção 9).
 
 ## 6. Integrações
 
@@ -101,9 +116,17 @@ Sem banco de dados tradicional — tudo vive no **Vercel Blob**:
 
 ## 9. Autenticação
 
-Senha única (`ADMIN_PASSWORD`, variável de ambiente) + cookie de sessão
-assinado com HMAC via Web Crypto (`SESSION_SECRET`), verificado em
-`proxy.ts` (roda em toda rota `/admin/*` e `/api/admin/*`).
+Senha única, verificada em duas camadas:
+- Se já foi trocada pela aba **Senha** do painel, vale o hash (PBKDF2-SHA256
+  + salt aleatório) salvo num Blob próprio (`auth/admin-password`, prefixo
+  isolado do JSON público de dados — nunca é servido pela rota
+  `/api/portfolio`).
+- Caso contrário, cai no valor de `ADMIN_PASSWORD` (variável de ambiente),
+  mantendo compatibilidade com deploys que ainda não trocaram a senha pelo
+  painel.
+
+Sessão via cookie assinado com HMAC via Web Crypto (`SESSION_SECRET`),
+verificado em `proxy.ts` (roda em toda rota `/admin/*` e `/api/admin/*`).
 
 ## 10. Hospedagem
 
@@ -114,9 +137,9 @@ ambiente configuradas diretamente no projeto Vercel.
 ## 11. Status
 
 Tudo descrito acima está implementado e em produção em
-`https://sccher.vercel.app`. Não há fotos reais carregadas ainda — as
-categorias existem (Ensaios Pessoais, Ensaios Corporativos, Ensaios
-Infantis, Eventos) mas aguardam upload via o painel.
+`https://sccher.vercel.app`. As categorias (Ensaios Pessoais, Ensaios
+Corporativos, Ensaios Infantis, Eventos) já têm fotos reais carregadas via
+o painel.
 
 ### Fora do escopo atual (não implementado)
 
