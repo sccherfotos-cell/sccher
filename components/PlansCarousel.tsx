@@ -8,7 +8,13 @@ const AUTO_ADVANCE_MS = 5000;
 
 function ChevronIcon({ direction }: { direction: "left" | "right" }) {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.25">
+    <svg
+      className="h-[15px] w-[15px] sm:h-[18px] sm:w-[18px]"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.25"
+    >
       <path
         d={direction === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}
         strokeLinecap="round"
@@ -18,7 +24,13 @@ function ChevronIcon({ direction }: { direction: "left" | "right" }) {
   );
 }
 
-export default function PlansCarousel({ plans }: { plans: Plan[] }) {
+export default function PlansCarousel({
+  plans,
+  fullWidth = false,
+}: {
+  plans: Plan[];
+  fullWidth?: boolean;
+}) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
 
@@ -43,43 +55,49 @@ export default function PlansCarousel({ plans }: { plans: Plan[] }) {
   }
 
   return (
-    <div className="sm:hidden">
-      <div className="relative overflow-hidden border border-panel-2 bg-panel">
-        <div className="absolute inset-x-0 top-0 h-px bg-foreground/50" />
+    <div className={fullWidth ? "" : "sm:hidden"}>
+      <div
+        className={`relative mx-auto border border-panel-2 bg-panel ${
+          fullWidth ? "sm:max-w-xl" : ""
+        }`}
+      >
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-px bg-foreground/50" />
 
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={plan.id}
-            initial={{ opacity: 0, x: direction * 14 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: direction * -14 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="flex flex-col bg-background px-9 py-7"
-          >
-            <h2 className="text-xs uppercase tracking-[0.35em] text-muted">{plan.name}</h2>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={plan.id}
+              initial={{ opacity: 0, x: direction * 14 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction * -14 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="flex flex-col bg-background px-9 py-7"
+            >
+              <h2 className="text-xs uppercase tracking-[0.35em] text-muted">{plan.name}</h2>
 
-            <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="text-3xl font-medium tracking-tight">{plan.price}</span>
-              {plan.priceNote && <span className="text-xs text-muted">{plan.priceNote}</span>}
-            </div>
+              <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <span className="text-3xl font-medium tracking-tight">{plan.price}</span>
+                {plan.priceNote && <span className="text-xs text-muted">{plan.priceNote}</span>}
+              </div>
 
-            <dl className="mt-6 flex flex-col gap-4 border-t border-panel-2 pt-6 text-sm">
-              {plan.details.map((detail) => (
-                <div key={detail.label}>
-                  <dt className="text-[10px] uppercase tracking-[0.25em] text-muted">
-                    {detail.label}
-                  </dt>
-                  <dd className="mt-1 leading-relaxed">{detail.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </motion.div>
-        </AnimatePresence>
+              <dl className="mt-6 flex flex-col gap-4 border-t border-panel-2 pt-6 text-sm">
+                {plan.details.map((detail) => (
+                  <div key={detail.label}>
+                    <dt className="text-[10px] uppercase tracking-[0.25em] text-muted">
+                      {detail.label}
+                    </dt>
+                    <dd className="mt-1 leading-relaxed">{detail.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         <button
           onClick={() => go(-1)}
           aria-label="Plano anterior"
-          className="absolute left-1 top-1/2 -translate-y-1/2 p-2 text-muted transition-colors hover:text-foreground"
+          className="absolute left-1 top-1/2 flex -translate-y-1/2 items-center justify-center rounded-full p-2 text-muted transition-colors hover:bg-panel-2 hover:text-foreground sm:-left-14 sm:h-10 sm:w-10"
         >
           <ChevronIcon direction="left" />
         </button>
@@ -87,7 +105,7 @@ export default function PlansCarousel({ plans }: { plans: Plan[] }) {
         <button
           onClick={() => go(1)}
           aria-label="Próximo plano"
-          className="absolute right-1 top-1/2 -translate-y-1/2 p-2 text-muted transition-colors hover:text-foreground"
+          className="absolute right-1 top-1/2 flex -translate-y-1/2 items-center justify-center rounded-full p-2 text-muted transition-colors hover:bg-panel-2 hover:text-foreground sm:-right-14 sm:h-10 sm:w-10"
         >
           <ChevronIcon direction="right" />
         </button>

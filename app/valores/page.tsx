@@ -25,6 +25,7 @@ const GRID_COLS_CLASS: Record<number, string> = {
 
 export default async function Valores() {
   const plans = await loadPlans();
+  const useCarouselOnDesktop = plans.length > 3;
   const gridColsClass = GRID_COLS_CLASS[Math.min(plans.length, 3)] ?? "sm:grid-cols-3";
 
   return (
@@ -41,35 +42,37 @@ export default async function Valores() {
       {/* Pricing tiers */}
       {plans.length > 0 && (
         <>
-          <PlansCarousel plans={plans} />
+          <PlansCarousel plans={plans} fullWidth={useCarouselOnDesktop} />
 
-          <div className={`hidden gap-px overflow-hidden border border-panel-2 bg-panel-2 sm:grid ${gridColsClass}`}>
-            {plans.map((plan) => (
-              <div key={plan.id} className="flex flex-col bg-background p-6 md:p-8">
-                <h2 className="text-xs uppercase tracking-[0.35em] text-muted">
-                  {plan.name}
-                </h2>
+          {!useCarouselOnDesktop && (
+            <div className={`hidden gap-px overflow-hidden border border-panel-2 bg-panel-2 sm:grid ${gridColsClass}`}>
+              {plans.map((plan) => (
+                <div key={plan.id} className="flex flex-col bg-background p-6 md:p-8">
+                  <h2 className="text-xs uppercase tracking-[0.35em] text-muted">
+                    {plan.name}
+                  </h2>
 
-                <dl className="mt-6 flex flex-1 flex-col gap-4 text-sm">
-                  {plan.details.map((detail) => (
-                    <div key={detail.label}>
-                      <dt className="text-[10px] uppercase tracking-[0.25em] text-muted">
-                        {detail.label}
-                      </dt>
-                      <dd className="mt-1 leading-relaxed">{detail.value}</dd>
-                    </div>
-                  ))}
-                </dl>
+                  <dl className="mt-6 flex flex-1 flex-col gap-4 text-sm">
+                    {plan.details.map((detail) => (
+                      <div key={detail.label}>
+                        <dt className="text-[10px] uppercase tracking-[0.25em] text-muted">
+                          {detail.label}
+                        </dt>
+                        <dd className="mt-1 leading-relaxed">{detail.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
 
-                <div className="mt-8 border-t border-panel-2 pt-6">
-                  <span className="text-2xl font-medium tracking-tight">{plan.price}</span>
-                  {plan.priceNote && (
-                    <span className="ml-2 text-xs text-muted">{plan.priceNote}</span>
-                  )}
+                  <div className="mt-8 border-t border-panel-2 pt-6">
+                    <span className="text-2xl font-medium tracking-tight">{plan.price}</span>
+                    {plan.priceNote && (
+                      <span className="ml-2 text-xs text-muted">{plan.priceNote}</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-muted">
             * Orçamento válido por 30 dias após o envio.
