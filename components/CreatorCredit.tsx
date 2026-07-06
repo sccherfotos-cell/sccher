@@ -7,7 +7,7 @@ const CREATOR_WHATSAPP_URL = buildWhatsAppUrl(
 
 export default function CreatorCredit() {
   return (
-    <div className="pb-24 pt-10 text-center">
+    <div className="pb-2 pt-10 text-center">
       <a
         href={CREATOR_WHATSAPP_URL}
         target="_blank"
