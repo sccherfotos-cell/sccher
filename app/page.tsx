@@ -13,7 +13,7 @@ export default function Home() {
         aria-hidden
       />
 
-      <ApertureLens className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 opacity-[0.12] sm:h-[460px] sm:w-[460px] md:h-[540px] md:w-[540px]" />
+      <ApertureLens className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 opacity-[0.2] sm:h-[460px] sm:w-[460px] md:h-[540px] md:w-[540px]" />
 
       <div className="relative z-10 flex max-w-3xl flex-col items-center gap-8">
         <h1 className="text-4xl font-medium leading-tight tracking-tight sm:text-6xl md:text-7xl">
