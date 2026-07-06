@@ -57,7 +57,7 @@ export default function PlansCarousel({
   return (
     <div className={fullWidth ? "" : "sm:hidden"}>
       <div
-        className={`relative mx-auto border border-panel-2 bg-panel ${
+        className={`relative mx-auto border border-panel-2 bg-background ${
           fullWidth ? "sm:max-w-xl" : ""
         }`}
       >

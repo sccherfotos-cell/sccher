@@ -4,6 +4,7 @@ export default function PadlockButton() {
   return (
     <Link
       href="/admin"
+      prefetch={false}
       aria-label="Admin"
       className="fixed bottom-4 right-4 z-40 text-muted opacity-30 transition-opacity hover:text-foreground hover:opacity-100"
     >
