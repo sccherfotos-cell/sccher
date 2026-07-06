@@ -82,21 +82,18 @@ export default function SiteNav({ logoUrl }: { logoUrl: string }) {
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
             aria-expanded={menuOpen}
-            className="flex items-center gap-2"
+            className="flex h-8 w-8 flex-col items-center justify-center gap-[5px]"
           >
-            <span className="text-xs uppercase tracking-[0.25em] text-muted">Site</span>
-            <span className="flex h-8 w-8 flex-col items-center justify-center gap-[5px]">
-              <span
-                className={`h-px w-5 bg-foreground transition-transform duration-200 ${
-                  menuOpen ? "translate-y-[3px] rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`h-px w-5 bg-foreground transition-transform duration-200 ${
-                  menuOpen ? "-translate-y-[3px] -rotate-45" : ""
-                }`}
-              />
-            </span>
+            <span
+              className={`h-px w-5 bg-foreground transition-transform duration-200 ${
+                menuOpen ? "translate-y-[3px] rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`h-px w-5 bg-foreground transition-transform duration-200 ${
+                menuOpen ? "-translate-y-[3px] -rotate-45" : ""
+              }`}
+            />
           </button>
         </div>
       </div>

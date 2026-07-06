@@ -49,18 +49,9 @@ export default function AdminDashboard({ initialData }: { initialData: Portfolio
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
           aria-expanded={menuOpen}
-          className="mt-3 flex h-8 w-8 flex-col items-center justify-center gap-[5px] lg:hidden"
+          className="mt-3 text-xs uppercase tracking-[0.3em] text-muted transition-colors hover:text-foreground lg:hidden"
         >
-          <span
-            className={`h-px w-5 bg-foreground transition-transform duration-200 ${
-              menuOpen ? "translate-y-[3px] rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`h-px w-5 bg-foreground transition-transform duration-200 ${
-              menuOpen ? "-translate-y-[3px] -rotate-45" : ""
-            }`}
-          />
+          Site
         </button>
       </header>
 
