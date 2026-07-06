@@ -4,6 +4,7 @@ import "./globals.css";
 import LensCursor from "@/components/LensCursor";
 import SiteNav from "@/components/SiteNav";
 import PadlockButton from "@/components/PadlockButton";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { getPortfolioData } from "@/lib/blob-store";
 
 const technical = JetBrains_Mono({
@@ -57,6 +58,7 @@ export default async function RootLayout({
         <SiteNav logoUrl={logoUrl} />
         <main className="flex-1">{children}</main>
         <PadlockButton />
+        <WhatsAppButton />
       </body>
     </html>
   );

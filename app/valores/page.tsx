@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getPortfolioData } from "@/lib/blob-store";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 import type { Plan } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -135,12 +135,14 @@ export default async function Valores() {
       </section>
 
       <div className="mt-24 border-t border-panel-2 pt-10">
-        <Link
-          href="/contato"
+        <a
+          href={getWhatsAppUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
           className="text-xs uppercase tracking-[0.3em] text-muted transition-colors hover:text-foreground"
         >
           Fale comigo →
-        </Link>
+        </a>
       </div>
     </div>
   );

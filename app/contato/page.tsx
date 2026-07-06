@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: "Contato — SCCHER",
@@ -28,7 +29,9 @@ export default function Contato() {
               Telefone
             </span>
             <a
-              href="tel:+5535992174364"
+              href={getWhatsAppUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-1 block text-lg text-muted transition-colors hover:text-foreground"
             >
               (35) 99217-4364
@@ -52,7 +55,14 @@ export default function Contato() {
               Redes sociais
             </span>
             <div className="mt-1 flex flex-col gap-1 text-lg text-muted">
-              <span>@scalese.fotografia</span>
+              <a
+                href="https://www.instagram.com/scalese.fotografia"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-foreground"
+              >
+                @scalese.fotografia
+              </a>
             </div>
           </div>
         </div>
