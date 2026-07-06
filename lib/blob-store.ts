@@ -39,7 +39,7 @@ function seedPlans(): Plan[] {
   const plans: Array<Omit<Plan, "id" | "order">> = [
     {
       name: "Individual",
-      price: "R$250",
+      price: "R$275",
       priceNote: null,
       details: [
         { label: "Duração", value: "1 hora de sessão" },
@@ -50,8 +50,8 @@ function seedPlans(): Plan[] {
     },
     {
       name: "Equipe 1",
-      price: "R$250",
-      priceNote: "+ R$60 / pessoa",
+      price: "R$275",
+      priceNote: "+ R$66 / pessoa",
       details: [
         { label: "Grupo", value: "No máximo 5 pessoas" },
         { label: "Duração", value: "2 a 3 horas de sessão" },
@@ -62,8 +62,8 @@ function seedPlans(): Plan[] {
     },
     {
       name: "Equipe 2",
-      price: "R$300",
-      priceNote: "+ R$80 / pessoa",
+      price: "R$330",
+      priceNote: "+ R$88 / pessoa",
       details: [
         { label: "Grupo", value: "6 ou mais pessoas" },
         { label: "Duração", value: "4 horas de sessão" },

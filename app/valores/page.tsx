@@ -104,7 +104,7 @@ export default async function Valores() {
               Fotos extras
             </span>
             <p className="mt-3 text-sm leading-relaxed">
-              R$15 / foto — ou pacote com 10 fotos extras por R$120.
+              R$17 / foto — ou pacote com 10 fotos extras por R$132.
             </p>
           </div>
         </div>
@@ -123,11 +123,11 @@ export default async function Valores() {
               </p>
             </div>
             <div>
-              <h4 className="text-sm uppercase tracking-[0.25em]">Restante</h4>
+              <h4 className="text-sm uppercase tracking-[0.25em]">Restante do Pagamento</h4>
               <p className="mt-2 text-sm leading-relaxed text-muted">
-                PIX: 70% no dia das fotos.
+                70% no dia das fotos.
                 <br />
-                Cartão de crédito: em até 4 vezes (acréscimo de 10% do valor).
+                Cartão de crédito: em até 4 vezes; pix 10% de desconto.
               </p>
             </div>
           </div>
