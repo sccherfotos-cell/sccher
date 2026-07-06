@@ -22,8 +22,9 @@ export default function Home() {
         </h1>
 
         <p className="max-w-xl text-sm leading-relaxed text-muted sm:text-base">
-          Retratos profissionais, ensaios pessoais, corporativos e infantis —
-          registrados com precisão técnica e uma estética clean e minimalista.
+          Retratos profissionais, ensaios pessoais, corporativos e infantis,
+          registrados com excelência técnica e uma estética clean, minimalista
+          e atemporal.
         </p>
 
         <span className="text-xs uppercase tracking-[0.5em] text-muted">
