@@ -78,23 +78,34 @@ export default function SiteNav({ logoUrl }: { logoUrl: string }) {
         {/* Mobile/tablet controls */}
         <div className="flex shrink-0 items-center gap-4 lg:hidden">
           <ThemeToggle />
-          <button
-            onClick={() => setMenuOpen((v) => !v)}
-            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={menuOpen}
-            className="flex h-8 w-8 flex-col items-center justify-center gap-[5px]"
-          >
-            <span
-              className={`h-px w-5 bg-foreground transition-transform duration-200 ${
-                menuOpen ? "translate-y-[3px] rotate-45" : ""
-              }`}
-            />
-            <span
-              className={`h-px w-5 bg-foreground transition-transform duration-200 ${
-                menuOpen ? "-translate-y-[3px] -rotate-45" : ""
-              }`}
-            />
-          </button>
+          {pathname.startsWith("/admin") ? (
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={menuOpen}
+              className="text-xs uppercase tracking-[0.3em] text-muted transition-colors hover:text-foreground"
+            >
+              Site
+            </button>
+          ) : (
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={menuOpen}
+              className="flex h-8 w-8 flex-col items-center justify-center gap-[5px]"
+            >
+              <span
+                className={`h-px w-5 bg-foreground transition-transform duration-200 ${
+                  menuOpen ? "translate-y-[3px] rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`h-px w-5 bg-foreground transition-transform duration-200 ${
+                  menuOpen ? "-translate-y-[3px] -rotate-45" : ""
+                }`}
+              />
+            </button>
+          )}
         </div>
       </div>
 
