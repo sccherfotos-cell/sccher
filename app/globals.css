@@ -10,6 +10,7 @@
 
   --background: var(--bg);
   --foreground: var(--fg);
+  --aperture-fill: color-mix(in srgb, var(--bg) 100%, white 6%);
 
   --mx: 50vw;
   --my: 50vh;
@@ -21,6 +22,7 @@
   --panel: #e8e5df;
   --panel-2: #d6d2c8;
   --muted: #5b5b57;
+  --aperture-fill: color-mix(in srgb, var(--bg) 100%, black 6%);
 }
 
 @theme inline {

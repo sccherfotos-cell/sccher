@@ -69,7 +69,7 @@ export default function ApertureLens({ className = "" }: { className?: string })
           >
             <path
               d={b.d}
-              fill="var(--bg)"
+              fill="var(--aperture-fill)"
               stroke="var(--muted)"
               strokeWidth="0.5"
             />
