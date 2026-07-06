@@ -153,26 +153,28 @@ export default function PlanManager({
         <div className="flex flex-col gap-2">
           <span className="text-[10px] uppercase tracking-widest text-muted">Itens do plano</span>
           {form.details.map((d, i) => (
-            <div key={i} className="flex gap-2">
+            <div key={i} className="flex flex-col gap-2 sm:flex-row">
               <input
                 value={d.label}
                 onChange={(e) => updateDetail(i, "label", e.target.value)}
                 placeholder="Rótulo (ex: Duração)"
-                className="w-1/3 border border-panel-2 bg-background px-3 py-2 text-sm outline-none focus:border-foreground"
+                className="w-full border border-panel-2 bg-background px-3 py-2 text-sm outline-none focus:border-foreground sm:w-1/3"
               />
-              <input
-                value={d.value}
-                onChange={(e) => updateDetail(i, "value", e.target.value)}
-                placeholder="Valor (ex: 1 hora de sessão)"
-                className="flex-1 border border-panel-2 bg-background px-3 py-2 text-sm outline-none focus:border-foreground"
-              />
-              <button
-                onClick={() => removeDetailRow(i)}
-                aria-label="Remover item"
-                className="px-2 text-muted hover:text-foreground"
-              >
-                ×
-              </button>
+              <div className="flex gap-2">
+                <input
+                  value={d.value}
+                  onChange={(e) => updateDetail(i, "value", e.target.value)}
+                  placeholder="Valor (ex: 1 hora de sessão)"
+                  className="flex-1 border border-panel-2 bg-background px-3 py-2 text-sm outline-none focus:border-foreground"
+                />
+                <button
+                  onClick={() => removeDetailRow(i)}
+                  aria-label="Remover item"
+                  className="px-2 text-muted hover:text-foreground"
+                >
+                  ×
+                </button>
+              </div>
             </div>
           ))}
           <button
