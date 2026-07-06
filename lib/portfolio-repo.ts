@@ -149,6 +149,25 @@ export async function movePhoto(
   return data;
 }
 
+export async function setPhotoFocalPoint(
+  categoryId: string,
+  photoId: string,
+  focalX: number,
+  focalY: number
+): Promise<PortfolioData> {
+  const data = await getPortfolioData();
+  const category = findCategory(data, categoryId);
+  const photo = category.photos.find((p) => p.id === photoId);
+  if (!photo) throw new NotFoundError("Foto");
+
+  const clamp = (n: number) => Math.min(100, Math.max(0, n));
+  photo.focalX = clamp(focalX);
+  photo.focalY = clamp(focalY);
+
+  await savePortfolioData(data);
+  return data;
+}
+
 export async function setCoverPhoto(categoryId: string, photoId: string): Promise<PortfolioData> {
   const data = await getPortfolioData();
   const category = findCategory(data, categoryId);

@@ -5,6 +5,11 @@ export interface Photo {
   width: number;
   height: number;
   createdAt: string;
+  /** Crop anchor (0-100%) used as CSS object-position when the photo is
+   * shown in a fixed-ratio box (e.g. the portfolio category card) and
+   * doesn't match that box's aspect ratio. Defaults to center (50/50). */
+  focalX?: number;
+  focalY?: number;
 }
 
 export interface Category {

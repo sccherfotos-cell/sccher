@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { PortfolioData } from "@/lib/types";
+import type { Photo, PortfolioData } from "@/lib/types";
+import FocalPointEditor from "./FocalPointEditor";
 
 export default function PhotoManager({
   data,
@@ -13,6 +14,7 @@ export default function PhotoManager({
 }) {
   const [activeCategoryId, setActiveCategoryId] = useState(data.categories[0]?.id ?? "");
   const [error, setError] = useState<string | null>(null);
+  const [framingPhoto, setFramingPhoto] = useState<Photo | null>(null);
 
   const category = data.categories.find((c) => c.id === activeCategoryId);
 
@@ -90,7 +92,14 @@ export default function PhotoManager({
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
         {category?.photos.map((photo, i) => (
           <div key={photo.id} className="group relative aspect-square overflow-hidden border border-panel-2 bg-panel">
-            <Image src={photo.url} alt="" fill sizes="240px" className="object-cover" />
+            <Image
+              src={photo.url}
+              alt=""
+              fill
+              sizes="240px"
+              className="object-cover"
+              style={{ objectPosition: `${photo.focalX ?? 50}% ${photo.focalY ?? 50}%` }}
+            />
 
             {category.coverPhotoId === photo.id && (
               <span className="absolute left-2 top-2 bg-foreground px-2 py-0.5 text-[9px] uppercase tracking-widest text-background">
@@ -104,6 +113,12 @@ export default function PhotoManager({
                 className="text-[10px] uppercase tracking-widest text-white hover:underline"
               >
                 Definir capa
+              </button>
+              <button
+                onClick={() => setFramingPhoto(photo)}
+                className="text-[10px] uppercase tracking-widest text-white hover:underline"
+              >
+                Enquadrar
               </button>
               <div className="flex gap-3">
                 <button
@@ -133,6 +148,15 @@ export default function PhotoManager({
           </div>
         ))}
       </div>
+
+      {framingPhoto && category && (
+        <FocalPointEditor
+          photo={framingPhoto}
+          categoryId={category.id}
+          onClose={() => setFramingPhoto(null)}
+          onSaved={onUpdate}
+        />
+      )}
     </div>
   );
 }
