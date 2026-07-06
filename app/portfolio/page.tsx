@@ -8,8 +8,6 @@ export const metadata: Metadata = {
   title: "Portfólio — SCCHER",
 };
 
-const RATIOS = ["aspect-[3/4]", "aspect-[4/3]", "aspect-[4/5]"];
-
 async function loadData(): Promise<PortfolioData> {
   try {
     return await getPortfolioData();
@@ -34,14 +32,14 @@ export default async function Portfolio() {
       {categories.length === 0 ? (
         <p className="text-sm text-muted">Em breve, novas categorias.</p>
       ) : (
-        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
-          {categories.map((category, i) => {
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {categories.map((category) => {
             const cover = category.photos.find((p) => p.id === category.coverPhotoId);
             return (
               <Link
                 key={category.id}
                 href={`/portfolio/${category.slug}`}
-                className={`group relative mb-4 block w-full overflow-hidden border border-panel-2 bg-panel ${RATIOS[i % RATIOS.length]}`}
+                className="group relative block aspect-[4/5] w-full overflow-hidden border border-panel-2 bg-panel"
               >
                 {cover ? (
                   <Image
