@@ -22,7 +22,7 @@ type TabId = (typeof TABS)[number]["id"];
 
 export default function AdminDashboard({ initialData }: { initialData: PortfolioData }) {
   const [data, setData] = useState(initialData);
-  const [tab, setTab] = useState<TabId>("categorias");
+  const [tab, setTab] = useState<TabId>("fotos");
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
 
